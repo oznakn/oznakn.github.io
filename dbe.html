@@ -1,0 +1,90 @@
+<html>
+<head>
+	<style>
+		body {
+			padding: 0px !important;
+			margin: 0px !important;
+		}
+		iframe {
+			display: block;
+			margin-top: 10px;
+			width: 100vw;
+		}
+	</style>
+</head>
+<body>
+	<input type="submit" id="calculate" value="Hesapla"></input>
+	<iframe id="main-iframe" src="http://www.dbe.metu.edu.tr/student/grades/grades.htm" />
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script>
+		$("#calculate").click(function() {
+			var midTermList = [];
+			var performanceGradeList = [];
+			var announcedQuizeList = [];
+			var speakingAssessmentList = [];
+			
+			var midTermValue = 0;
+			var performanceGradeValue = 0;
+			var announcedQuizeValue = 0;
+			var speakingAssessmentValue = 0;
+			
+			var $mainIframe = $("#main-iframe");
+			var $mainTBody = $('frameset > frame[name="main"] frameset > frame[name="main"] body table > tbody');
+			console.log($mainIframe, $mainTBody);
+			
+			$mainTBody.find("tr").every(function() {
+				$(this).find("td").every(function() {
+					var $b = $(this).find("b");
+					
+					var value1 = $b.find("font:first-child");
+					var value2 = $b.find("font:last-child");
+					value2 = number(value2);
+					
+					if(value1.indexOf("MT") > -1) {
+						midTermList.push(value2);
+					}
+					else if(value1.indexOf("AQ") > -1) {
+						announcedQuizeList.push(value2);
+					}
+					else if(value1.indexOf("PQ") > -1 || value1.indexOf("IG") > -1) {
+						performanceGradeList.push(value2);
+					}
+					else if(value1.indexOf("SA") > -1) {
+						speakingAssessmentList.push(value2);
+					}
+				});
+			});
+			
+			for(var i = 0; i < midTermList.length; i++) {
+				midTermValue += midTermList[i];
+			}
+			
+			for(var i = 0; i < performanceGradeList.length; i++) {
+				performanceGradeValue += performanceGradeList[i];
+			}
+			
+			for(var i = 0; i < announcedQuizeList.length; i++) {
+				announcedQuizeValue += announcedQuizeList[i];
+			}
+			
+			for(var i = 0; i < speakingAssessmentList.length; i++) {
+				speakingAssessmentValue += speakingAssessmentList[i];
+			}
+			
+			midTermValue /= midTermList.length;
+			performanceGradeValue /= midTermList.length;
+			announcedQuizeValue /= midTermList.length;
+			speakingAssessmentValue /= midTermList.length;
+			
+			midTermValue *= (25/45);
+			performanceGradeValue *= (10/45);
+			announcedQuizeValue *= (5/45);
+			speakingAssessmentValue *= (5/45);
+			
+			var resultValue = midTermValue + performanceGradeValue + announcedQuizeValue + speakingAssessmentValue;
+			console.log(resultValue);
+		});
+	</script>
+</body>
+</html>
