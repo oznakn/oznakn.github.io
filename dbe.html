@@ -33,8 +33,8 @@
 			var $mainTBody = $('frameset > frame[name="main"] frameset > frame[name="main"] body table > tbody');
 			console.log($mainIframe, $mainTBody);
 			
-			$mainTBody.find("tr").every(function() {
-				$(this).find("td").every(function() {
+			$mainTBody.find("tr").each(function() {
+				$(this).find("td").each(function() {
 					var $b = $(this).find("b");
 					
 					var value1 = $b.find("font:first-child");
